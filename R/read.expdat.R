@@ -1,16 +1,24 @@
 
 install.packages("remotes")
+install.packages("ggpmisc")
 remotes::install_github("hawkmoth/sablebase")
+
 
 test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
 test <- read.sscf("./resp data/QuantGen_07-15-2019_13-23.exp")
 
-
+test[test$CO2 == vals_peaks,]
+data = test
+channel="CO2"
 plot.resp <- function(data, channel, ...){
 	plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), ylab = paste0("%", channel), main = "", ...)
 	abline(v = (attr(data, "marker")$sample), col = "black")
 	text(attr(data, "marker")$text, x = attr(data, "marker")$sample - 5, y = max(data[,channel]) + 0.005)
 
+	peaks <- ggpmisc:::find_peaks(data[,channel], span = length(data[,channel])/nrow(attr(data, "marker"))-1)
+	time <- as.numeric(rownames(data.frame(data))[peaks == TRUE])
+	vals_peaks <- data[,channel][peaks]
+	points(vals_peaks ~ time, pch = 16)
 
 }
 
