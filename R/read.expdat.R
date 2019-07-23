@@ -1,6 +1,7 @@
 
 install.packages("remotes")
 install.packages("ggpmisc")
+library(quantmod)
 remotes::install_github("hawkmoth/sablebase")
 
 
@@ -16,14 +17,27 @@ plot.resp <- function(data, channel, ...){
 	text(attr(data, "marker")$text, x = attr(data, "marker")$sample - 5, y = max(data[,channel]) + 0.005)
 
 	peaks <- ggpmisc:::find_peaks(data[,channel], span = length(data[,channel])/nrow(attr(data, "marker"))-1)
+
+	
 	time <- as.numeric(rownames(data.frame(data))[peaks == TRUE])
 	vals_peaks <- data[,channel][peaks]
+
 	points(vals_peaks ~ time, pch = 16)
+
+	median <- median(data[,channel])
+	marker <- attr(data, "marker")$text
+
+	return(data.frame(
+		channel = vals_peaks, 
+		               time = time, 
+   change = (vals_peaks - median),
+	marker = marker)
+	)
 
 }
 
 plot.resp(test, "O2", col = "blue")
-plot.resp(test, "CO2", col = "red")
+dat <- plot.resp(test, "CO2", col = "red")
 plot.resp(test, c("O2","CO2"), col = c("blue", "red"))
 
 par(mfrow= c(1,2))
