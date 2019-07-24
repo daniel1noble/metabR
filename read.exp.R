@@ -1,4 +1,3 @@
-
 install.packages("remotes")
 install.packages("ggpmisc")
 library(quantmod)
@@ -12,30 +11,6 @@ test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
 test[test$CO2 == vals_peaks,]
 data = test
 channel="CO2"
-plot.resp <- function(data, channel, ...){
-	plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), ylab = paste0("%", channel), main = "", ...)
-	abline(v = (attr(data, "marker")$sample), col = "black")
-	text(attr(data, "marker")$text, x = attr(data, "marker")$sample - 5, y = max(data[,channel]) + 0.005)
-
-	peaks <- ggpmisc:::find_peaks(data[,channel], span = length(data[,channel])/nrow(attr(data, "marker"))-1)
-
-	
-	time <- as.numeric(rownames(data.frame(data))[peaks == TRUE])
-	vals_peaks <- data[,channel][peaks]
-
-	points(vals_peaks ~ time, pch = 16)
-
-	median <- median(data[,channel])
-	marker <- attr(data, "marker")$text
-
-	return(data.frame(
-		channel = vals_peaks, 
-		               time = time, 
-   change = (vals_peaks - median),
-	marker = marker)
-	)
-
-}
 
 plot.resp(test, "O2", col = "blue")
 dat <- plot.resp(test, "CO2", col = "red")
