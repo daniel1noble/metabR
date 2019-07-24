@@ -2,11 +2,12 @@
 install.packages("remotes")
 install.packages("ggpmisc")
 library(quantmod)
-remotes::install_github("hawkmoth/sablebase")
-
+library(devtools)
+install_github("hawkmoth/sablebase", force = TRUE)
+library(SableBase)
 
 test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
-test <- read.sscf("./resp data/QuantGen_07-15-2019_13-23.exp")
+test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
 
 test[test$CO2 == vals_peaks,]
 data = test
@@ -38,7 +39,7 @@ plot.resp <- function(data, channel, ...){
 
 plot.resp(test, "O2", col = "blue")
 dat <- plot.resp(test, "CO2", col = "red")
-plot.resp(test, c("O2","CO2"), col = c("blue", "red"))
+plot.resp(test, c("O2","CO2"))
 
 par(mfrow= c(1,2))
 per = 0.03
