@@ -11,6 +11,14 @@ test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
 test[test$CO2 == vals_peaks,]
 data = test
 channel="CO2"
+name = "O2"
+data <- data.frame()
+
+test[, which(name %in% attr(test, "dimnames")[[2]])]$O2_2 <- test[, which(name %in% attr(test, "dimnames")[[2]])]*(-1)
+
+
+data$O2_2 <- data$O2*(-1)
+plot(data$O2_2)
 
 plot.resp(test, "O2", col = "blue")
 dat <- plot.resp(test, "CO2", col = "red")
