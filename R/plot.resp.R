@@ -6,20 +6,28 @@
 #' @export
 
 plot.resp <- function(data, channel, ...){
-	plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), ylab = paste0("%", channel), main = "", ...)
-	abline(v = (attr(data, "marker")$sample), col = "black")
-	text(attr(data, "marker")$text, x = attr(data, "marker")$sample - 5, y = max(data[,channel]) + 0.005)
 
+	marker <- attr(data, "marker")
+
+	if(channel == "O2"){
+		dat <- extract_data(data)
+		dat$O2_2 <- dat$O2*(-1)
+		plot_simple(dat, channel  = "02_2", marker, ...)
+	}
+
+	if(channel == "CO2"){
+		plot_simple(data, channel, marker, ...)
+	}
+
+	# Find peaks in data.
 	peaks <- ggpmisc:::find_peaks(data[,channel], span = length(data[,channel])/nrow(attr(data, "marker"))-1)
 
-	
 	time <- as.numeric(rownames(data.frame(data))[peaks == TRUE])
 	vals_peaks <- data[,channel][peaks]
 
 	points(vals_peaks ~ time, pch = 16)
 
 	median <- median(data[,channel])
-	marker <- attr(data, "marker")$text
 
 	return(data.frame(
 		channel = vals_peaks, 
@@ -30,3 +38,17 @@ plot.resp <- function(data, channel, ...){
 
 }
 
+
+
+extract_data <- function(data){
+	dat <- data.frame(data[,])
+	dat$time <- as.numeric(rownames(data.frame(data)))
+	return(dat)
+}
+
+
+plot_simple <- function(data, channel, marker, ...){
+	plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), ylab = paste0("%", channel), main = "", ...)
+	abline(v = (marker$sample), col = "black")
+	text(marker$text, x = marker$sample - 5, y = max(data[,channel]) + 0.005)
+}
