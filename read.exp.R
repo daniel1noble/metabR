@@ -5,6 +5,8 @@ library(devtools)
 install_github("hawkmoth/sablebase", force = TRUE)
 library(SableBase)
 
+rm(list=ls())
+
 test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
 test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
 
@@ -20,7 +22,10 @@ test[, which(name %in% attr(test, "dimnames")[[2]])]$O2_2 <- test[, which(name %
 data$O2_2 <- data$O2*(-1)
 plot(data$O2_2)
 
-plot.resp(test, "O2", col = "blue")
+plot.resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
+plot.resp(test, "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
+
+
 dat <- plot.resp(test, "CO2", col = "red")
 plot.resp(test, c("O2","CO2"))
 
