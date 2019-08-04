@@ -1,6 +1,6 @@
 install.packages("remotes")
 install.packages("ggpmisc")
-library(quantmod)
+library(quantreg)
 library(devtools)
 install_github("hawkmoth/sablebase", force = TRUE)
 library(SableBase)
@@ -9,6 +9,10 @@ rm(list=ls())
 
 test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
 test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
+
+plot_resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
+plot_resp(test, "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
+
 
 test[test$CO2 == vals_peaks,]
 data = test
@@ -22,8 +26,7 @@ test[, which(name %in% attr(test, "dimnames")[[2]])]$O2_2 <- test[, which(name %
 data$O2_2 <- data$O2*(-1)
 plot(data$O2_2)
 
-plot.resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
-plot.resp(test, "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
+
 
 
 dat <- plot.resp(test, "CO2", col = "red")
