@@ -85,6 +85,7 @@
 #' @param
 #' @description Extracts data from SableBase loaded file that is relevant to the user
 #' @author Daniel Noble – daniel.noble@anu.edu.au
+#' @export
 	extract_data <- function(data){
 		dat <- data.frame(data[,])
 		dat$time <- as.numeric(rownames(data.frame(data)))
