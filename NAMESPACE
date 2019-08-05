@@ -2,3 +2,4 @@
 
 export(extract_data)
 export(plot_resp)
+export(resp_data)

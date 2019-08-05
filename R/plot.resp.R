@@ -28,13 +28,13 @@
 				peak_data <- data.frame(vals_peaks, time)
 
 			#Plot the maximum of the peaks
-				points(vals_peaks ~ time, pch = 16)
+				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
 				median_pred <- quantile_median(data, channel  = "O2_2", tau = tau)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
-				lines(median_pred ~ data$time)
+				graphics::lines(median_pred ~ data$time)
 
 		}
 
@@ -53,13 +53,13 @@
 				peak_data <- data.frame(vals_peaks, time)
 
 			#Plot the maximum of the peaks
-				points(vals_peaks ~ time, pch = 16)
+				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
 				median_pred <- quantile_median(data, channel  = "CO2", tau = tau)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
-				lines(median_pred ~ data$time)
+				graphics::lines(median_pred ~ data$time)
 		}
 
 		# Check whether the marker number and the identified number of peaks match before creating data frame
@@ -86,7 +86,6 @@
 
 #' @title extract_data
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
-#' @param
 #' @description Extracts data from SableBase loaded file that is relevant to the user
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 #' @export
@@ -103,9 +102,9 @@
 #' @description Plots the relevant data as a function of time with the marker text plotted as well. 
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 	plot_simple <- function(data, channel, marker, ...){
-		plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), main = "", type = "l", xlab = "Time", ...)
-		abline(v = (marker$sample), col = "black")
-		text(marker$text, x = marker$sample - 5, y = max(data[,channel]) + 0.005)
+		graphics::plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), main = "", type = "l", xlab = "Time", ...)
+		graphics::abline(v = (marker$sample), col = "black")
+		graphics::text(marker$text, x = marker$sample - 5, y = max(data[,channel]) + 0.005)
 	}
 
 

@@ -8,6 +8,12 @@ plot_resp(data, channel, threshold_peak = 0.1, tau = 0.5, ...)
 }
 \arguments{
 \item{data}{The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.}
+
+\item{channel}{The channel of interest (e.g., "O2", "CO2", "H2O" etc.). Note that for oxygen, the channel is automatically inverted so that maximal peaks can be found}
+
+\item{threshold_peak}{The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.}
+
+\item{tau}{The quantile that one wishes to model across time. Default is currently the median, tau = 0.5}
 }
 \description{
 Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)
