@@ -33,6 +33,13 @@ resp_data <- function(metabR_data){
 	        merge_marker <- cbind(CO2Marker[i,], data.frame(channel = median, time = CO2Marker[i,"marker_time"], change = 0))
 	        data_new[i,colnames(merge_marker)] <- merge_marker
 	   }
+
+	   if(i == nrow(CO2Marker)){
+	        get_peak_for_marker <- CO2_peaks_fix[dplyr::between(CO2_peaks_fix$time, CO2Marker$marker_time[i], duration), ]
+	      merge_marker <- cbind(CO2Marker[i,], get_peak_for_marker)
+	      data_new[i,colnames(merge_marker)] <- merge_marker
+	   }
+
 	}
 
 	attr(data_new, "class") <- c("metabR", "data.frame")
