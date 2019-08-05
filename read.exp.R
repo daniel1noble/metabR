@@ -6,7 +6,7 @@ install_github("hawkmoth/sablebase", force = TRUE)
 library(SableBase)
 install.packages("remotes")
 remotes::install_github("mnblonsky/REMI")
-
+remotes::install_github("daniel1noble/metabR")
 
 #############################################################################
 # Test code
@@ -21,7 +21,7 @@ par(mfrow = c(2,1), mar = c(4,4,1,1))
   CO2 <- plot_resp(test, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
 
 
-tester1 <- resp_data(O2)
+tester1 <- resp_data(test)
 tester2 <- resp_data(CO2)
 
 
