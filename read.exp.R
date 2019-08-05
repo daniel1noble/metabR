@@ -13,15 +13,17 @@ remotes::install_github("daniel1noble/metabR")
 
 rm(list=ls())
 
-test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
-test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
+test <- read.sscf("./resp data/QuantGen_07-20-2019_370-394,426,431.exp")
+test <- read.sscf("./resp data/QuantGen_07-18-2019_142-166.exp")
+test <- read.sscf("./resp data/QuantGen_07-22-2019_668-692.exp")
+
 
 par(mfrow = c(2,1), mar = c(4,4,1,1))
    O2 <- plot_resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
   CO2 <- plot_resp(test, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
 
 
-tester1 <- resp_data(test)
+tester1 <- resp_data(O2)
 tester2 <- resp_data(CO2)
 
 
