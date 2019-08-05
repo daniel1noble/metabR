@@ -21,6 +21,7 @@ resp_data <- function(metabR_data){
 	data_new <- data.frame()  
 
 	# Loop through all the marker data.
+	supressWarnings(
 	for(i in 1:nrow(CO2Marker)){
 	 
 	  if(CO2Marker$marker[i] != "c"){
@@ -40,7 +41,7 @@ resp_data <- function(metabR_data){
 	      data_new[i,colnames(merge_marker)] <- merge_marker
 	   }
 
-	}
+	})
 
 	attr(data_new, "class") <- c("metabR", "data.frame")
 	return(data_new)
