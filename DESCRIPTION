@@ -9,5 +9,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     ggpmisc,
-    SableBase
+    SableBase,
+    dplyr,
+    quantreg,
+    graphics
 RoxygenNote: 6.1.1
