@@ -1,6 +1,8 @@
 #' @title plot_resp
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
-#' @param
+#' @param channel The channel of interest (e.g., "O2", "CO2", "H2O" etc.). Note that for oxygen, the channel is automatically inverted so that maximal peaks can be found
+#' @param threshold_peak The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.
+#' @param tau The quantile that one wishes to model across time. Default is currently the median, tau = 0.5
 #' @description Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 #' @export
@@ -13,30 +15,30 @@
 		if(channel == "O2"){
 		
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
-				dat <- extract_data(data)
-				dat$O2_2 <- dat$O2*(-1)
-				plot_simple(dat, channel  = "O2_2", marker, ylab = paste0("%", channel), ...)
+				data <- extract_data(data)
+				data$O2_2 <- data$O2*(-1)
+				plot_simple(data, channel  = "O2_2", marker, ylab = paste0("%", channel), ...)
 
 			# Find peaks in data.
-				peaks <- ggpmisc:::find_peaks(dat[,"O2_2"], span = length(dat[,"O2_2"])/nrow(marker)-1)
+				peaks <- ggpmisc:::find_peaks(data[,"O2_2"], span = length(data[,"O2_2"])/nrow(marker)-1)
 
 			# Get the peak values from the raw data and the time points that these peaks exist at
-				vals_peaks <- dat[,"O2_2"][peaks]
-				time <- as.numeric(rownames(data.frame(dat))[peaks == TRUE])
+				vals_peaks <- data[,"O2_2"][peaks]
+				time <- as.numeric(rownames(data.frame(data))[peaks == TRUE])
 				peak_data <- data.frame(vals_peaks, time)
 
 			#Plot the maximum of the peaks
 				points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
-				median_pred <- quantile_median(dat, channel  = "O2_2", tau = tau)
+				median_pred <- quantile_median(data, channel  = "O2_2", tau = tau)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
-				lines(median_pred ~ dat$time)
+				lines(median_pred ~ data$time)
 
 		}
 
-		if(channel == "CO2"){
+		if(channel != "O2"){
 
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
@@ -60,7 +62,7 @@
 				lines(median_pred ~ data$time)
 		}
 
-		# Check whether the marker number and the identified number of peaks match before creating dataframe
+		# Check whether the marker number and the identified number of peaks match before creating data frame
 			if(length(peak_data$vals_peaks) != length(marker$text)){
 					peak_data[peak_data$vals_peaks >= ((threshold_peak*median_pred[peak_data$time])+median_pred[peak_data$time]),]
 			}
@@ -76,6 +78,8 @@
 			       marker_time = marker$time))
 
 			class(data_list) <- "metabR"
+			attr(data_list, "median") <- mean(median_pred)
+			attr(data_list, "duration") <- max(data$time)
 			return(data_list)
 	}
 

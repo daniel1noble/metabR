@@ -4,6 +4,12 @@ library(quantreg)
 library(devtools)
 install_github("hawkmoth/sablebase", force = TRUE)
 library(SableBase)
+install.packages("remotes")
+remotes::install_github("mnblonsky/REMI")
+
+
+#############################################################################
+# Test code
 
 rm(list=ls())
 
@@ -11,9 +17,73 @@ test <- read.sscf("./resp data/QuantGen_07-13-2019_1-2.exp")
 test <- read.sscf("./resp data/QuantGen_07-23-2019_762-786.exp")
 
 par(mfrow = c(2,1), mar = c(4,4,1,1))
-O2 <- plot_resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
-CO2 <- plot_resp(test, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
+   O2 <- plot_resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
+  CO2 <- plot_resp(test, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
 
+
+tester1 <- resp_data(O2)
+tester2 <- resp_data(CO2)
+
+
+CO2Marker <- data.frame(CO2$marker_data)
+ CO2peaks <- data.frame(CO2$peak_data)
+
+ CO2peaks[CO2Marker, list(marker, marker_time , time, channel, change) , roll = "nearest" ]
+
+
+
+data_new <- data.frame()
+
+# First exclude values below the first marker. Cannot be possible
+between_markers <- CO2peaks$time >= range(CO2Marker$marker_sample)[1] & CO2peaks$time <= 1600 # change 1600 to length of dataframe/ samples
+
+CO2_peaks_fix <- CO2peaks[between_markers,]
+
+CO2_peaks_fix
+
+CO2Marker
+i = 1
+
+data_new <- data.frame()  
+for(i in 1:nrow(CO2Marker)){
+ 
+  if(CO2Marker$marker[i] != "c"){
+      get_peak_for_marker <- CO2_peaks_fix[between(CO2_peaks_fix$time, CO2Marker$marker_time[i], CO2Marker$marker_time[i+1]), ]
+      merge_marker <- cbind(CO2Marker[i,], get_peak_for_marker)
+      data_new[i,colnames(merge_marker)] <- merge_marker
+  }
+
+   if(CO2Marker$marker[i] == "c"){
+        merge_marker <- cbind(CO2Marker[i,], data.frame(channel = 0.05, time = CO2Marker[i,"marker_time"], change = 0))
+        data_new[i,colnames(merge_marker)] <- merge_marker
+   }
+}
+
+
+
+
+
+
+   if(CO2Marker$marker[i])
+
+i = 1
+
+for(i in 1:nrow(CO2_peaks_fix)){
+  extratMarker_dat <- CO2Marker[CO2Marker$marker_time[i+1] < CO2_peaks_fix[i,]$time
+}
+
+
+for(i in 1:nrow(CO2peaks)){
+      time1 <- CO2peaks$time[i]
+      
+      if(time1 < CO2Marker$marker_time[1]){
+        time1 <- CO2peaks$time[-i]
+      }
+
+}
+
+
+############################################################################
 
 test[test$CO2 == vals_peaks,]
 data = test
