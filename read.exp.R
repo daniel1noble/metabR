@@ -13,9 +13,9 @@ remotes::install_github("daniel1noble/metabR")
 
 rm(list=ls())
 
-test <- read.sscf("./resp data/QuantGen_07-20-2019_370-394,426,431.exp")
+test <- read.sscf(".filename.exp")
 test <- read.sscf("./resp data/QuantGen_07-18-2019_142-166.exp")
-test <- read.sscf("./resp data/QuantGen_07-22-2019_668-692.exp")
+test <- read.sscf("./resp data/QuantGen_07-23-2019_787-811.exp")
 
 
 par(mfrow = c(2,1), mar = c(4,4,1,1))
