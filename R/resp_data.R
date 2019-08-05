@@ -24,7 +24,7 @@ resp_data <- function(metabR_data){
 	for(i in 1:nrow(CO2Marker)){
 	 
 	  if(CO2Marker$marker[i] != "c"){
-	      get_peak_for_marker <- CO2_peaks_fix[between(CO2_peaks_fix$time, CO2Marker$marker_time[i], CO2Marker$marker_time[i+1]), ]
+	      get_peak_for_marker <- CO2_peaks_fix[dplyr::between(CO2_peaks_fix$time, CO2Marker$marker_time[i], CO2Marker$marker_time[i+1]), ]
 	      merge_marker <- cbind(CO2Marker[i,], get_peak_for_marker)
 	      data_new[i,colnames(merge_marker)] <- merge_marker
 	  }
