@@ -21,7 +21,7 @@ resp_data <- function(metabR_data){
 	data_new <- data.frame()  
 
 	# Loop through all the marker data.
-	supressWarnings(
+	suppressWarnings(
 	for(i in 1:nrow(CO2Marker)){
 	 
 	  if(CO2Marker$marker[i] != "c"){
