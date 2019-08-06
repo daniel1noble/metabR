@@ -14,6 +14,8 @@ plot_resp(data, channel, threshold_peak = 0.1, tau = 0.5, ...)
 \item{threshold_peak}{The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.}
 
 \item{tau}{The quantile that one wishes to model across time. Default is currently the median, tau = 0.5}
+
+\item{...}{Additional arguments passed to plot}
 }
 \description{
 Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)

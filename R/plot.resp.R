@@ -3,6 +3,7 @@
 #' @param channel The channel of interest (e.g., "O2", "CO2", "H2O" etc.). Note that for oxygen, the channel is automatically inverted so that maximal peaks can be found
 #' @param threshold_peak The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.
 #' @param tau The quantile that one wishes to model across time. Default is currently the median, tau = 0.5
+#' @param ... Additional arguments passed to plot
 #' @description Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 #' @export
@@ -99,6 +100,7 @@
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
 #' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting. 
 #' @param marker The marker data that should be plotted.
+#' @param ... Additional arguments passed to plot
 #' @description Plots the relevant data as a function of time with the marker text plotted as well. 
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 	plot_simple <- function(data, channel, marker, ...){

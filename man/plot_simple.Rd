@@ -12,6 +12,8 @@ plot_simple(data, channel, marker, ...)
 \item{channel}{The specific channel, or data column from `extract_data` that is relevant for plotting.}
 
 \item{marker}{The marker data that should be plotted.}
+
+\item{...}{Additional arguments passed to plot}
 }
 \description{
 Plots the relevant data as a function of time with the marker text plotted as well.

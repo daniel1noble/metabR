@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("Daniel", "Noble", email = "daniel.noble@anu.edu.au", role = c("aut", "cre"))
 Description: A package for importing, plotting and analyzing spectrograph's of oxygen, carbon dioxide, water and flow rates for the calculation of metabolic rate
 Depends: R (>= 3.6.0)
-License: What license is it under?
+License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -12,5 +12,6 @@ Imports:
     SableBase,
     dplyr,
     quantreg,
-    graphics
+    graphics,
+    plyr
 RoxygenNote: 6.1.1
