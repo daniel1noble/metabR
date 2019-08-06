@@ -7,26 +7,66 @@ library(SableBase)
 install.packages("remotes")
 remotes::install_github("mnblonsky/REMI")
 remotes::install_github("daniel1noble/metabR")
-
+library(metabR)
 #############################################################################
 # Test code
 
 rm(list=ls())
 
-test <- read.sscf(".filename.exp")
-test <- read.sscf("./resp data/QuantGen_07-18-2019_142-166.exp")
-test <- read.sscf("./resp data/QuantGen_07-23-2019_787-811.exp")
+dat1 <- read.sscf("./resp data/QuantGen_07-18-2019_117-140.exp")
+dat2 <- read.sscf("./resp data/QuantGen_07-18-2019_142-166.exp")
 
 
 par(mfrow = c(2,1), mar = c(4,4,1,1))
-   O2 <- plot_resp(test, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
-  CO2 <- plot_resp(test, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
+   dat1_O2 <- plot_resp(dat1, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
+  dat1_CO2 <- plot_resp(dat1, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
 
 
-tester1 <- resp_data(O2)
-tester2 <- resp_data(CO2)
+# dat1_O2 <- resp_data(dat1_O2) # Some bug and not gather data frame. Need to see what is up. Can't use MR.R
+dat1_CO22 <- resp_data(dat1_CO2)
+
+dat1_CO22$file <- "07_18_2019_117-140"
+
+par(mfrow = c(2,1), mar = c(4,4,1,1))
+   dat2_O2 <- plot_resp(dat2, channel = "O2", col = "blue", threshold_peak = 0.10, tau = 0.35)
+  dat2_CO2 <- plot_resp(dat2, channel = "CO2", col = "red", threshold_peak = 0.50,  tau = 0.50)
 
 
+ #dat2_O2 <- resp_data(dat2_O2) # Some bug and not gather data frame. Need to see what is up. Can't use MR.R
+dat2_CO22 <- resp_data(dat2_CO2)
+
+dat2_CO22$file = "07_18_2019_142-166"
+
+auto_data <- rbind(dat1_CO22, dat2_CO22)
+
+auto_data$match <- paste0(auto_data$marker, "_", auto_data$file)
+
+integrate_data <- read.csv("./data/integrated_data_test.csv")
+integrate_data$match <- paste0(integrate_data$Letter, "_", integrate_data$File)
+
+merge_data <- merge(auto_data, integrate_data, by = "match")
+merge_data$weight_Vol_ml <- merge_data$Weight*0.001
+merge_data$v <- merge_data$notes - merge_data$weight_Vol_ml
+
+merge_data$MR_Integrate <- (merge_data$Integrate*merge_data$v ) / merge_data$time_closed
+merge_data$MR_Maximum   <- (merge_data$change*merge_data$v ) / merge_data$time_closed
+
+merge_data$MR_Integrate_ulmin <- merge_data$MR_Integrate*1000
+merge_data$MR_Maximum__ulmin  <- merge_data$MR_Maximum*1000
+
+# Check the covariance between calculations with max or the integration values
+  par(mfrow = c(1,2))
+  merge_data2 <- merge_data %>% filter(MR_Maximum__ulmin > 0.03)
+  plot(MR_Integrate_ulmin ~ MR_Maximum__ulmin, data = merge_data2, pch = 16, ylim = c(0, max(merge_data2$MR_Integrate_ulmin, na.rm = TRUE)), xlim = c(0, max(merge_data2$MR_Maximum__ulmin, na.rm = TRUE)), ylab = "MR (Integration) ul/min", xlab = "MR (Maximum) ul/min")
+  abline(a = 0, b = 1, lty = 2)
+  plot(log(MR_Maximum__ulmin) ~ log(Weight), data = merge_data2, col = merge_data2$Sex, pch = 16, ylab = "MR (Maximum) ul/min", xlab = "Weight (mg)")
+
+cor.test(merge_data2$MR_Integrate, merge_data2$MR_Maximum)
+
+mod <- lm(log(MR_Maximum__ulmin) ~ log(Weight) + File, data = merge_data2)
+summary(mod)
+
+#########################################################################
 CO2Marker <- data.frame(CO2$marker_data)
  CO2peaks <- data.frame(CO2$peak_data)
 
