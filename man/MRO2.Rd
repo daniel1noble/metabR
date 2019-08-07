@@ -24,4 +24,6 @@ Finds the relevant matching marker and peak data and merges the two data frames 
 }
 \author{
 Daniel Noble – daniel.noble@anu.edu.au
+
+Essie Rodgers – essie.rodgers@anu.edu.au
 }

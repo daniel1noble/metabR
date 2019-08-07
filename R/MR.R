@@ -42,6 +42,7 @@
 #' @param CO2_data The metabR resp data for carbon dioxide
 #' @description Finds the relevant matching marker and peak data and merges the two data frames together. 
 #' @author Daniel Noble – daniel.noble@anu.edu.au
+#' @author Essie Rodgers – essie.rodgers@anu.edu.au
 #' @export
 MRO2 <- function(v, time, bp, t, O2_dataChangeChannel, CO2_dataChange){
 			## Notes on definitions
@@ -78,6 +79,7 @@ MRO2 <- function(v, time, bp, t, O2_dataChangeChannel, CO2_dataChange){
 #' @param CO2_data The metabR resp data for carbon dioxide
 #' @description Finds the relevant matching marker and peak data and merges the two data frames together. 
 #' @author Daniel Noble – daniel.noble@anu.edu.au
+#' @author Essie Rodgers – essie.rodgers@anu.edu.au
 #' @export
 
 MRCO2 <- function(v, time, bp, t, CO2_dataChange){
