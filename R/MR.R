@@ -36,7 +36,7 @@
 #' @title MRO2
 #' @param v The volume of air sample for closed system respirometry. This volume excludes the mass of the animal
 #' @param time The duration animal was enclosed within the chamber
-#' @param bp The barometric pressure at the time the chamber was closed
+#' @param bp The barometric pressure in kPa at the time the chamber was closed
 #' @param t The temperature of the chamber air in degrees Celsius (note this is converted to Kelvins)
 #' @param O2_data The metabR resp data for oxygen
 #' @param CO2_data The metabR resp data for carbon dioxide
@@ -74,7 +74,7 @@ MRO2 <- function(v, time, bp, t, O2_dataChangeChannel, CO2_dataChange){
 #' @title MRCO2
 #' @param v The volume of air sample for closed system respirometry. This volume excludes the mass of the animal
 #' @param time The duration animal was enclosed within the chamber
-#' @param bp The barometric pressure at the time the chamber was closed
+#' @param bp The barometric pressure in kPa at the time the chamber was closed
 #' @param t The temperature of the chamber air in degrees Celsius (note this is converted to Kelvins)
 #' @param CO2_data The metabR resp data for carbon dioxide
 #' @description Finds the relevant matching marker and peak data and merges the two data frames together. 
