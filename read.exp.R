@@ -1,14 +1,4 @@
-install.packages("remotes")
-install.packages("ggpmisc")
-library(quantreg)
-library(devtools)
-install_github("hawkmoth/sablebase", force = TRUE)
-library(SableBase)
-install.packages("remotes")
-remotes::install_github("mnblonsky/REMI")
-remotes::install_github("daniel1noble/metabR")
-library(metabR)
-#############################################################################
+1#############################################################################
 # Test code
 
 rm(list=ls())
