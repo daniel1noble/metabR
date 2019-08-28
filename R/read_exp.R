@@ -14,6 +14,10 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+#' @title read_resp
+#' @param filename Give the path to the .exp file 
+#' @author Thomas Foerster <foerster@sablesys.com>
+#' @export
 
 # Read basic SSCF file
 read.exp <- function(filename) {

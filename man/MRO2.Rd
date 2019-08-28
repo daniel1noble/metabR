@@ -11,7 +11,7 @@ MRO2(v, time, bp, t, O2_dataChangeChannel, CO2_dataChange)
 
 \item{time}{The duration animal was enclosed within the chamber}
 
-\item{bp}{The barometric pressure at the time the chamber was closed}
+\item{bp}{The barometric pressure in kPa at the time the chamber was closed}
 
 \item{t}{The temperature of the chamber air in degrees Celsius (note this is converted to Kelvins)}
 
