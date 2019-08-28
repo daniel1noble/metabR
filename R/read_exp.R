@@ -16,7 +16,7 @@
 
 
 # Read basic SSCF file
-read.sscf <- function(filename) {
+read.exp <- function(filename) {
   f <- file(filename, "rb")
 
   header <- read.header(f)
