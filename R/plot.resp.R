@@ -104,7 +104,7 @@
 #' @description Plots the relevant data as a function of time with the marker text plotted as well. 
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 	plot_simple <- function(data, channel, marker, ...){
-		graphics::plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), main = "", type = "l", xlab = "Time", ...)
+		graphics::plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), type = "l", xlab = "Time", ...)
 		graphics::abline(v = (marker$sample), col = "black")
 		graphics::text(marker$text, x = marker$sample - 5, y = max(data[,channel]) + 0.005)
 	}
