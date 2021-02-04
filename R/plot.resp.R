@@ -12,7 +12,7 @@
 
 		# Extract the marker data and the file name
 			marker <- attr(data, "marker")
-			method = match.arg(method)
+			method <- match.arg(method)
 
 		if(channel == "O2"){
 		
@@ -125,13 +125,12 @@
 		if(method == "spline"){
 				  rqfit <- quantreg::rq(data[,channel] ~ splines::bs(data$time, df = df), tau = tau)
 			median_pred <- predict(rqfit, newdata = data.frame(data$time))
-		return(median_pred)
-	}
+		}
 
 		if(method == "norm"){
-		      rqfit <- quantreg::rq(data[,channel] ~ data$time, tau = tau)
-		median_pred <- rqfit$coefficients[1] + rqfit$coefficients[2]*data$time
-		return(median_pred)
-	}
+			      rqfit <- quantreg::rq(data[,channel] ~ data$time, tau = tau)
+			median_pred <- rqfit$coefficients[1] + rqfit$coefficients[2]*data$time
+		}
 
+		return(median_pred)
 }
