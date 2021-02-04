@@ -8,10 +8,11 @@
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 #' @export
 
-	plot_resp <- function(data, channel, threshold_peak = 0.10, tau = 0.5, ...){
+	plot_resp <- function(data, channel, threshold_peak = 0.10, tau = 0.5, df = 12, method = c("norm", "spline"), ...){
 
 		# Extract the marker data and the file name
 			marker <- attr(data, "marker")
+			method = match.arg(method)
 
 		if(channel == "O2"){
 		
@@ -32,7 +33,7 @@
 				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
-				median_pred <- quantile_median(data, channel  = "O2_2", tau = tau, ...)
+				median_pred <- quantile_median(data, channel  = "O2_2", df = df, tau = tau, method = method)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
 				graphics::lines(median_pred ~ data$time)
@@ -57,7 +58,7 @@
 				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
-				median_pred <- quantile_median(data, channel  = "CO2", tau = tau, ...)
+				median_pred <- quantile_median(data, channel  = "CO2", df = df, tau = tau, method = method)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
 				graphics::lines(median_pred ~ data$time)
@@ -119,7 +120,6 @@
 #' @description Fits a quantile regression model to data, modeling the quantile described by tau – usually the median – to determine the baseline. This is modeled across time to account for drift, particularity in oxygen and water vapor.
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 	quantile_median <- function(data, channel, tau = 0.5, df = 12, method = c("norm", "spline")){
-
 		method = match.arg(method)
 
 		if(method == "spline"){
