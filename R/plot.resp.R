@@ -32,7 +32,7 @@
 				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
-				median_pred <- quantile_median(data, channel  = "O2_2", tau = tau)
+				median_pred <- quantile_median(data, channel  = "O2_2", tau = tau, ...)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
 				graphics::lines(median_pred ~ data$time)
@@ -57,7 +57,7 @@
 				graphics::points(vals_peaks ~ time, pch = 16)
 
 			#Quantile regression of median to deal with drift over time
-				median_pred <- quantile_median(data, channel  = "CO2", tau = tau)
+				median_pred <- quantile_median(data, channel  = "CO2", tau = tau, ...)
 
 			# Plot the median to ensure we can see that it is appropriate. Can change tau to offset median a bit.
 				graphics::lines(median_pred ~ data$time)
