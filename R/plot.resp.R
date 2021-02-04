@@ -112,12 +112,26 @@
 
 #' @title quantile_median
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
-#' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting. 
+#' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting.
+#' @param df The degrees of freedom to use in cubic spline
+#' @param method Which method to use to fit the quantile. Method = "norm" indicates you expect a simple linear quantile regression, method = "spline" indicates you would like to use a cubic spline with default df = 12. 
 #' @param tau The relevant quantile of interest. Default is the median, 0.5, but this can be modified depending on what is desired and the fit of the model.
 #' @description Fits a quantile regression model to data, modeling the quantile described by tau – usually the median – to determine the baseline. This is modeled across time to account for drift, particularity in oxygen and water vapor.
 #' @author Daniel Noble – daniel.noble@anu.edu.au
-	quantile_median <- function(data, channel, tau = 0.5){
+	quantile_median <- function(data, channel, tau = 0.5, df = 12, method = c("norm", "spline")){
+
+		method = match.arg(method)
+
+		if(method == "spline"){
+				  rqfit <- quantreg::rq(data[,channel] ~ splines::bs(data$time, df = df), tau = tau)
+			median_pred <- predict(rqfit, newdata = data.frame(data$time))
+		return(median_pred)
+	}
+
+		if(method == "norm"){
 		      rqfit <- quantreg::rq(data[,channel] ~ data$time, tau = tau)
 		median_pred <- rqfit$coefficients[1] + rqfit$coefficients[2]*data$time
 		return(median_pred)
 	}
+
+}
