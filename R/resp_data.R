@@ -35,7 +35,7 @@ resp_data <- function(metabR_data){
 	      data_new[i,colnames(merge_marker)] <- merge_marker
 	  }
 
-	   if(CO2Marker$marker[i] == "c"){
+	   if(CO2Marker$marker[i] == "c" | CO2Marker$marker[i] == "C"){
 	        merge_marker <- cbind(CO2Marker[i,], data.frame(channel = median, time = CO2Marker[i,"marker_time"], change = 0))
 	        data_new[i,colnames(merge_marker)] <- merge_marker
 	   }
