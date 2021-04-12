@@ -4,7 +4,13 @@
 \alias{quantile_median}
 \title{quantile_median}
 \usage{
-quantile_median(data, channel, tau = 0.5)
+quantile_median(
+  data,
+  channel,
+  tau = 0.5,
+  df = 12,
+  method = c("norm", "spline")
+)
 }
 \arguments{
 \item{data}{The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.}
@@ -12,6 +18,10 @@ quantile_median(data, channel, tau = 0.5)
 \item{channel}{The specific channel, or data column from `extract_data` that is relevant for plotting.}
 
 \item{tau}{The relevant quantile of interest. Default is the median, 0.5, but this can be modified depending on what is desired and the fit of the model.}
+
+\item{df}{The degrees of freedom to use in cubic spline}
+
+\item{method}{Which method to use to fit the quantile. Method = "norm" indicates you expect a simple linear quantile regression, method = "spline" indicates you would like to use a cubic spline with default df = 12.}
 }
 \description{
 Fits a quantile regression model to data, modeling the quantile described by tau – usually the median – to determine the baseline. This is modeled across time to account for drift, particularity in oxygen and water vapor.

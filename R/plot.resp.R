@@ -3,6 +3,8 @@
 #' @param channel The channel of interest (e.g., "O2", "CO2", "H2O" etc.). Note that for oxygen, the channel is automatically inverted so that maximal peaks can be found
 #' @param threshold_peak The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.
 #' @param tau The quantile that one wishes to model across time. Default is currently the median, tau = 0.5
+#' @param df The degrees of freedom used for fitting splines. Only used with method = "spline".
+#' @param method There are two choices of method that can be used. The first, "norm", will model the data using a linear quantile regression, modeling the relevant quantile (defined by tau). The second method, "spline", will make use of a cubic spline to model the time series. The "spline" approach works very well for drifting and waving baselines, as is often the case for oxygen data. One needs to control both tau and df to avoid over or underfitting the baseline data. 
 #' @param ... Additional arguments passed to plot
 #' @description Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)
 #' @author Daniel Noble – daniel.noble@anu.edu.au
