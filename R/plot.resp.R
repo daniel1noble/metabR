@@ -4,7 +4,7 @@
 #' @param threshold_peak The threshold which peaks are found at. Higher values mean less noise is detected. Note: Currently this is not functioning normally.
 #' @param tau The quantile that one wishes to model across time. Default is currently the median, tau = 0.5
 #' @param df The degrees of freedom used for fitting splines. Only used with method = "spline".
-#' @param method There are two choices of method that can be used. The first, "norm", will model the data using a linear quantile regression, modeling the relevant quantile (defined by tau). The second method, "spline", will make use of a cubic spline to model the time series. The "spline" approach works very well for drifting and waving baselines, as is often the case for oxygen data. One needs to control both tau and df to avoid over or underfitting the baseline data. 
+#' @param method There are two choices of method that can be used. The first, "norm", will model the data using a linear quantile regression, modeling the relevant quantile (defined by tau). The second method, "spline", will make use of a cubic spline to model the time series. The "spline" approach works very well for drifting and waving baselines, as is often the case for oxygen data. One needs to control both tau and df to avoid over or underfitting the baseline data.
 #' @param ... Additional arguments passed to plot
 #' @description Plots channels with relevant data on oxygen, carbon dioxide, water vapor etc. Finds the local maximum of peaks (carbon dioxide and water vapor only) and spits out the time, marker and maximal value in percentage. It also calculated the percentage change from baseline (uses the median value of entire distribution)
 #' @author Daniel Noble – daniel.noble@anu.edu.au
@@ -16,11 +16,11 @@
 			marker <- attr(data, "marker")
 			method <- match.arg(method)
 
-		if(channel == "O2"){
-		
+		if(channel == "O2" | channel == "Oxygen"){
+
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
-				data$O2_2 <- data$O2*(-1)
+				data$O2_2 <- data[,channel]*(-1)
 				plot_simple(data, channel  = "O2_2", marker, ylab = paste0("%", channel), ...)
 
 			# Find peaks in data.
@@ -42,7 +42,7 @@
 
 		}
 
-		if(channel != "O2"){
+		if(channel != "O2" | channel == "Oxygen"){
 
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
@@ -73,9 +73,9 @@
 
 		# Return the data frame of change in percentage of gas in the air sample from baseline along with marker data.
 			data_list <- list(peak_data = data.frame(
-				       channel = peak_data$vals_peaks, 
-				          time = peak_data$time, 
-		                change = (peak_data$vals_peaks - median_pred[peak_data$time])), 
+				       channel = peak_data$vals_peaks,
+				          time = peak_data$time,
+		                change = (peak_data$vals_peaks - median_pred[peak_data$time])),
 					marker_data = data.frame(
 			            marker = marker$text,
 			     marker_sample = marker$sample,
@@ -101,10 +101,10 @@
 
 #' @title plot_simple
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
-#' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting. 
+#' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting.
 #' @param marker The marker data that should be plotted.
 #' @param ... Additional arguments passed to plot
-#' @description Plots the relevant data as a function of time with the marker text plotted as well. 
+#' @description Plots the relevant data as a function of time with the marker text plotted as well.
 #' @author Daniel Noble – daniel.noble@anu.edu.au
 	plot_simple <- function(data, channel, marker, ...){
 		graphics::plot(data[,channel], ylim = c(min(data[,channel]) - 0.01, max(data[,channel]) + 0.01), type = "l", xlab = "Time", ...)
@@ -117,7 +117,7 @@
 #' @param data The ExpeData (".exp" – Sable Systems) file with the spectrograph information for oxygen, carbon dioxide, water vapor flow rate etc.
 #' @param channel The specific channel, or data column from `extract_data` that is relevant for plotting.
 #' @param df The degrees of freedom to use in cubic spline
-#' @param method Which method to use to fit the quantile. Method = "norm" indicates you expect a simple linear quantile regression, method = "spline" indicates you would like to use a cubic spline with default df = 12. 
+#' @param method Which method to use to fit the quantile. Method = "norm" indicates you expect a simple linear quantile regression, method = "spline" indicates you would like to use a cubic spline with default df = 12.
 #' @param tau The relevant quantile of interest. Default is the median, 0.5, but this can be modified depending on what is desired and the fit of the model.
 #' @description Fits a quantile regression model to data, modeling the quantile described by tau – usually the median – to determine the baseline. This is modeled across time to account for drift, particularity in oxygen and water vapor.
 #' @author Daniel Noble – daniel.noble@anu.edu.au
