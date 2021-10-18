@@ -42,7 +42,7 @@
 
 		}
 
-		if(channel != "O2" | channel == "Oxygen"){
+		if(channel != "O2" | channel != "Oxygen"){
 
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
