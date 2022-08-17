@@ -16,7 +16,7 @@
 			marker <- attr(data, "marker")
 			method <- match.arg(method)
 
-		if(channel == "O2" | channel == "Oxygen"){
+		if(channel == "O2"){
 
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
@@ -42,7 +42,7 @@
 
 		}
 
-		if(channel != "O2" | channel != "Oxygen"){
+		if(channel != "O2"){
 
 			# Extract and plot data. For oxygen, multiple by -1 to invert the curves so they are upward facing
 				data <- extract_data(data)
